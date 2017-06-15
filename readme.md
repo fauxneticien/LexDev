@@ -25,9 +25,9 @@ mv jq-osx-amd64 /usr/local/bin/jq
 mv mlr.macosx /usr/local/bin/mlr
 mv task /usr/local/bin/task
 
-# Delete /tmp directory
+# Delete ~Downloads/tmp directory
 cd ~/Downloads
-rm -R /tmp
+rm -R tmp
 ```
 
 # Part I: Getting things out of plain text formats with `jq`
