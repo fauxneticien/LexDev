@@ -1,3 +1,9 @@
+# About
+
+1-minute video summary: See live changes in a list of invalid parts of speech items (`invalid-ps.csv`), as the user makes changes to a backslash-coded dictionary file (`rotokas.dic`), and the documentation file of the parts of speech values used in the dictionary (`parts-of-speech.md`).
+
+![Video summary](http://g.recordit.co/mXbEwJWopv.gif)
+
 # Set up
 
 ## Mac
