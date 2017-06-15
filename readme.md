@@ -2,7 +2,7 @@
 
 ## Mac
 
-```
+```Shell
 # Download software into ~/Downloads/tmp
 mkdir -p ~/Downloads/tmp
 cd ~/Downloads/tmp
@@ -53,7 +53,7 @@ Shown below is the first headword from the Rotokas dictionary (`rotokas.dic` ope
 
 Using `jq`, we can parse the backslash-coded data (which are essentially line-separated key-value pairs in the format: `\key value`) into individual JSON objects:
 
-```
+```JSON
 {
   "key": "lx",
   "value": "kaa"
@@ -76,7 +76,7 @@ The `jq` command below will produce the key-value JSON objects output given the 
 
 ***Note.*** the flag `--raw-input` needs to be passed to `jq` to indicate we're not ingesting JSON data, which is what `jq` assumes by default.
 
-```
+```Shell
 jq --raw-input 'capture("\\\\(?<key>[a-z]+) (?<value>.*)")'
 ```
 
@@ -89,7 +89,7 @@ We're going to modify the usage above with two more bits to make the output data
 
 In the command below, #1 is achieved by piping the result of the capture (using `|`) into another `jq` expression: `.line_number = input_line_number`. This appends the key `line_number` into each object, assigning it the value `input_line_number`, which is made available by `jq` (Manual reference: [I/O](https://stedolan.github.io/jq/manual/v1.5/#IO)). We achieve #2 by setting the flag `--compact-output`
 
-```
+```Shell
 jq --raw-input --compact-output \
 	'capture("\\\\(?<key>[a-z]+) (?<value>.*)")
 	| .line_number = input_line_number'
@@ -97,7 +97,7 @@ jq --raw-input --compact-output \
 
 ##### Production output (JSON lines format: see [http://jsonlines.org/](http://jsonlines.org/))
 
-```
+```JSON
 {"key":"lx","value":"kaa","line_number":1}
 {"key":"ps","value":"V","line_number":2}
 {"key":"pt","value":"A","line_number":3}
@@ -130,7 +130,7 @@ This document describes the part of speech values used in the Rotokas dictionary
 
 We want to capture the initial part of some of the lines starting two or more `# `, then followed by a `:`, rendering the output below:
 
-```
+```JSON
 {"value":"ADV"}
 {"value":"N"}
 {"value":"V"}
@@ -150,7 +150,7 @@ While `jq` is great for reading in raw plain-text data into structured *JSON* ob
 
 The following data are selected lines from the `rotokas.dic` backslash-coded data which have been parsed into a JSON lines format (see Part I, Section 1).
 
-```
+```JSON
 {"key":"lx","value":"kaa","line_number":1}
 {"key":"ps","value":"V","line_number":2}
 ...
@@ -166,7 +166,7 @@ The following data are selected lines from the `rotokas.dic` backslash-coded dat
 
 We can use the `filter` verb from `mlr` to keep only the parts of speech lines (i.e. JSON objects where the `key` is `ps`).
 
-```
+```JSON
 {"key":"ps","value":"V","line_number":2}
 {"key":"ps","value":"V","line_number":18}
 {"key":"ps","value":"N","line_number":36}
@@ -177,7 +177,7 @@ We can use the `filter` verb from `mlr` to keep only the parts of speech lines (
 
 ***Note.*** The `--json` flag which indicates to `mlr` that both the input and output should be in JSON (same as `mlr --ijson --ojson ...`).
 
-```
+```Shell
 mlr --json filter '$key == "ps"' rotokas.json
 ```
 
@@ -185,12 +185,12 @@ mlr --json filter '$key == "ps"' rotokas.json
 
 With Miller, we can very easily get CSV (or other output, see documentation [http://johnkerl.org/miller/doc/file-formats.html](http://johnkerl.org/miller/doc/file-formats.html)) by switching the flag:
 
-```
+```Shell
 mlr --ijson --ocsv filter '$key == "ps"' rotokas.json
 ```
 which gives us:
 
-```
+```CSV
 key,value,line_number
 ps,V,2
 ps,V,18
@@ -227,7 +227,7 @@ Notice the both files share a common field called `value`. We can use `mlr` to q
 
 ### Output
 
-```
+```CSV
 key,value,line_number
 ps,???,78
 ps,CLASS,1057
@@ -275,21 +275,21 @@ mlr --ijson --ocsv \
 
 ### Input
 
-```
+```YAML
 say-hello:
-	cmds:
-		- echo "hello"
+    cmds:
+    	- echo "hello"
 ```
 
 ### Output
 
-```
+```Shell
 hello
 ```
 
 ### Command
 
-```
+```Shell
 task say-hello
 ```
 
@@ -299,7 +299,7 @@ By using `task`, we can give make a frequently-used command, or a set of command
 
 ### Input (`Taskfile.yml`)
 
-```
+```YAML
 backslash-to-json:
   desc: "Converts rotokas.dic to a JSON-lines file"
   cmds:
@@ -310,7 +310,7 @@ backslash-to-json:
 
 ### Output (`rotokas.json`)
 
-```
+```JSON
 {"key":"lx","value":"kaa"}
 {"key":"ps","value":"VFR"}
 {"key":"pt","value":"A"}
@@ -324,7 +324,7 @@ backslash-to-json:
 
 ### Command
 
-```
+```Shell
 task backslash-to-json
 ```
 
@@ -334,7 +334,7 @@ We can modify the `Taskfile.yml` from the previous section, giving the `backslas
 
 ### Input (`Taskfile.yml`)
 
-```
+```YAML
 backslash-to-json:
   desc: "Converts rotokas.dic to a JSON-lines file"
   sources:
@@ -351,7 +351,7 @@ backslash-to-json:
 
 Same as section above.
 
-```
+```Shell
 task --watch backslash-to-json
 ```
 
@@ -365,7 +365,7 @@ We'll now combine all the parts above to demonstrate how we can continuously re-
 2. `parts-of-speech.md`: A Markdown document, with valid parts of speech defined in its headers (e.g. `## V: Verb`)
 3. `Taskfile.yml`: a YAML document containing various tasks to run as files #1 and #2 are modified
 
-    ```
+    ```YAML
     backslash-to-json:
       desc: "Converts rotokas.dic to a JSON-lines file"
       sources:
@@ -409,7 +409,7 @@ We'll now combine all the parts above to demonstrate how we can continuously re-
     
 ## Outputs
 
-```
+```CSV
 key,value,line_number
 ps,VFR,5
 ps,???,78
@@ -428,6 +428,6 @@ ps,???,2425
 
 ## Command
 
-```
+```Shell
 task --watch test-ps-values
 ```
