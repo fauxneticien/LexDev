@@ -77,7 +77,7 @@ The `jq` command below will produce the key-value JSON objects output given the 
 ***Note.*** the flag `--raw-input` needs to be passed to `jq` to indicate we're not ingesting JSON data, which is what `jq` assumes by default.
 
 ```Shell
-jq --raw-input 'capture("\\\\(?<key>[a-z]+) (?<value>.*)")'
+jq --raw-input 'capture("\\\\(?<key>[a-z]+) (?<value>.*)")' rotokas.dic
 ```
 
 #### Production usage
@@ -92,10 +92,10 @@ In the command below, #1 is achieved by piping the result of the capture (using 
 ```Shell
 jq --raw-input --compact-output \
 	'capture("\\\\(?<key>[a-z]+) (?<value>.*)")
-	| .line_number = input_line_number'
+	| .line_number = input_line_number' rotokas.dic > rotokas.json
 ```
 
-##### Production output (JSON lines format: see [http://jsonlines.org/](http://jsonlines.org/))
+##### Production output (`rotokas.json` in JSON lines format: see [http://jsonlines.org/](http://jsonlines.org/))
 
 ```JSON
 {"key":"lx","value":"kaa","line_number":1}
@@ -204,7 +204,7 @@ ps,N,36
 
 Recall the following data:
 
-1. `valid_pos.json`: JSON-lines data extracted from a Markdown document (See Part I, Section 2). Let's call this the data "on the left" (will be evident later).
+1. `ps-whitelist.json`: JSON-lines data extracted from a Markdown document (See Part I, Section 2). Let's call this the data "on the left" (will be evident later).
 
 	```
 	{"value":"ADV"}
@@ -254,7 +254,7 @@ Options:
 The following command:
 
 1. Filters the dictionary data, keeping only objects with `ps` values, then pipes this data to the next command which
-2. Joins `valid_pos.json` to the left of the incoming data (i.e. from #1) and outputs/emits only data that are:
+2. Joins `ps-whitelist.json` to the left of the incoming data (i.e. from #1) and outputs/emits only data that are:
 	a. Non-paired between the left and right data (`--np`), and
 	b. Originated from the right data (`--ur`)
 3. Formats the emitted data as comma-separated values (`--ocsv`)
@@ -264,7 +264,7 @@ mlr --json filter '$key == "ps"' rotokas.json |
 mlr --ijson --ocsv \
     join  <b>--np --ur</b> \
           -j "value" \
-          -f valid_pos.json
+          -f ps-whitelist.json
 </pre>
 
 # Part III: Streamlining and automating command-line tools with `task`
