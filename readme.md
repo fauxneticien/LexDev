@@ -30,6 +30,18 @@ cd ~/Downloads
 rm -R tmp
 ```
 
+## Linux
+
+Near identical to Mac, probably (replace `curl` with `wget`), etc.
+
+## Windows
+
+All 3 tools (`jq, mlr, task`) can be run on Windows (I've tested this), but I don't know how to set up `$PATH` on Windows so you can call `jq` anywhere and not, for example, `./C:\path\to\some\folder\jq.exe ...` (if that's even correct).
+
+### Docker container
+
+I can easily do this for later demos #TODO. 
+
 # Part I: Getting things out of plain text formats with `jq`
 
 We're going to use [`jq`](https://stedolan.github.io/jq/), a "lightweight and flexible command-line JSON processor", to parse various plain text data (dictionary data, documentation files) into a structured format. One major advantage of using `jq` is being able to use [`jqplay.org`](https://jqplay.org/) with some test data to quickly come up with the parsing script.
