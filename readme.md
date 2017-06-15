@@ -112,7 +112,7 @@ jq --raw-input --compact-output \
 
 Suppose we have a Markdown file, called `parts-of-speech.md`, which has the following content:
 
-```
+```Markdown
 # Rotokas parts of speech
 
 ## About
@@ -243,12 +243,12 @@ Joins records from specified left file name with records from all file names
 at the end of the Miller argument list. Functionality is essentially the same as the system "join" command,
 but for record streams.
 Options:
-  <b>-f</b> {left file name}
-  <b>-j</b> {a,b,c}   Comma-separated join-field names for output
+  <b>-f</b> 	{left file name}
+  <b>-j</b> 	{a,b,c}   Comma-separated join-field names for output
   ...
-  <b>--np</b>         Do not emit paired records
-  --ul         Emit unpaired records from the left file
-  <b>--ur</b>         Emit unpaired records from the right file(s)
+  <b>--np</b>   Do not emit paired records
+  --ul		Emit unpaired records from the left file
+  <b>--ur</b>   Emit unpaired records from the right file(s)
 </pre>
 
 The following command:
