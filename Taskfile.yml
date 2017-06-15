@@ -1,0 +1,39 @@
+backslash-to-json:
+  desc: "Converts rotokas.dic to a JSON-lines file"
+  sources:
+    - rotokas.dic
+  generates:
+    - rotokas.json
+  cmds:
+    - cat rotokas.dic |
+      jq --raw-input --compact-output
+         'capture("\\\\(?<key>[a-z]+) (?<value>.*)")
+         | .line_number = input_line_number' > rotokas.json
+
+parse-ps-whitelist:
+  desc: "Extracts valid parts of speech from headers in parts-of-speech.md"
+  sources:
+    - parts-of-speech.md
+  generates:
+    - ps-whitelist.json
+  cmds:
+    - cat parts-of-speech.md |
+      jq --raw-input --compact-output
+         'capture("^#{2,}\\s(?<value>[A-Z]+):\\s")' > ps-whitelist.json 
+
+test-ps-values:
+  desc: "Returns invalid parts of speech data from the dictionary"
+  sources:
+    - rotokas.dic
+    - parts-of-speech.md
+  generates:
+    - invalid-ps.csv
+  cmds:
+    - ^backslash-to-json
+    - ^parse-ps-whitelist
+    - cat rotokas.json |
+      mlr --json filter '$key == "ps"' |
+      mlr --ijson --ocsv
+          join  --np --ur
+                -j "value"
+                -f ps-whitelist.json > invalid-ps.csv
