@@ -1,6 +1,6 @@
 # About
 
-1-minute video summary: See live changes in a list of invalid parts of speech items (`invalid-ps.csv`), as the user makes changes to a backslash-coded dictionary file (`rotokas.dic`), and the documentation file of the parts of speech values used in the dictionary (`parts-of-speech.md`).
+GIF video summary: See live changes in a list of invalid parts of speech items (`invalid-ps.csv`), as the user makes changes to a backslash-coded dictionary file (`rotokas.dic`), and the documentation file of the parts of speech values used in the dictionary (`parts-of-speech.md`). Full 1-minute demo screencast here: [http://recordit.co/mXbEwJWopv](http://recordit.co/mXbEwJWopv).
 
 ![Video summary](http://g.recordit.co/mXbEwJWopv.gif)
 
